@@ -1,0 +1,2 @@
+ssdeep,1.1--blocksize:hash:hash,filename
+98304:k5npHLT0vSdx1yuh1SmFVr6/NpQqctBZOfl+7D:k5pHLoUx1tSkrJBZ,"closer.mp3"
