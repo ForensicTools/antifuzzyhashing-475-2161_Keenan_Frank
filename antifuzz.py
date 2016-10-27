@@ -17,22 +17,24 @@ def main():
 
 	# Make copy of file
 	newFile = sys.argv[2]
-	copy2(ogFile, newFile)
 
+	# Mess with the given file
+	cmd(['lame','--quiet', '--scale', '1', ogFile])
+	print cmd(['mv', ogFile + ".mp3", newFile])
+
+	# Hash files
 	ogHash = ssdeep.hash_from_file(ogFile)
 	newHash = ssdeep.hash_from_file(newFile)
 
-	print ogHash
+	# Compare the hashes
+	#print ogHash
 	print ssdeep.compare(ogHash, newHash)
 
-"""
 def cmd(command):
 	#if (arg2 && arg1):
-	p = subprocess.Popen(command.split(), stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+	p = subprocess.Popen(command, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 	out, err = p.communicate()
-	print err
 	return out
-"""
 
 if __name__ == "__main__":
 	main()
