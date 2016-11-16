@@ -11,7 +11,8 @@ import argparse
 import subprocess
 from shutil import copy2
 import ssdeep #http://python-ssdeep.readthedocs.io/en/latest/installation.html
-
+import random
+import re
 
 '''
 Name: main
@@ -28,6 +29,7 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("originalFile", help="File to antifuzz")
 	parser.add_argument("--newFile", help="Name of the antifuzzed file")
+	parser.add_argument("-m", action='store_true', default=False, help="Change the metadata of the file instead, will still change the ssdeep hash")
 	args = parser.parse_args()
 	pattern = re.compile('mp3$')
 
@@ -49,7 +51,7 @@ def main():
 	ogHash = ssdeep.hash_from_file(ogFile)
 	
 	# Mess with the given file
-	mp3(ogFile, nFile)
+	mp3(ogFile, nFile, args)
 
 	# Hash files
 	newHash = ssdeep.hash_from_file(nFile)
@@ -72,9 +74,11 @@ Parameters: ogFile - the original mp3 file to be antifuzzed
 Return: None
 '''
 
-def mp3(ogFile, newFile):
-	
-	cmd(['lame','--quiet', '--scale', '1', ogFile])
+def mp3(ogFile, newFile, args):
+	if args.m is None:
+		cmd(['lame','--quiet', '--scale', '1', ogFile])
+	else:
+		cmd(['lame','--quiet','--tc', str(random.randrange(0, 27)), ogFile])
 	cmd(['mv', ogFile + ".mp3", newFile])
 
 
