@@ -7,21 +7,23 @@ Authors: Kaitlin Keenan and Ryan Frank
 
 # Import needed modules
 import sys
+import re
+import random
 import argparse
 import subprocess
 from shutil import copy2
 import ssdeep #http://python-ssdeep.readthedocs.io/en/latest/installation.html
-import random
-import re
+
 
 '''
 Name: main
 
-Purpose: x
+Purpose: The main method performs the antifuzzing operations to show the percentage of similarity between two mp3 files.
 
 Parameters: None
 
-Return: x
+Return: 1 if incorrect arguments are passed
+	0 if operation has been succesfully run
 '''
 
 def main():
@@ -48,12 +50,13 @@ def main():
 	# Make copy of file
 	nFile = args.newFile
 
+	# Hash original file
 	ogHash = ssdeep.hash_from_file(ogFile)
 	
-	# Mess with the given file
+	# Make changes to given file
 	mp3(ogFile, nFile, args)
 
-	# Hash files
+	# Hash new file
 	newHash = ssdeep.hash_from_file(nFile)
 
 	# Compare the hashes
@@ -66,15 +69,17 @@ def main():
 '''
 Name: mp3
 
-Purpose: changes mp3 file by using lame to change vol by scale of 1
+Purpose: Changes mp3 file by using lame to change volume by a scale of 1
 
-Parameters: ogFile - the original mp3 file to be antifuzzed
-	    newFile - the antifuzzed mp3 file
+Parameters: ogFile - Original mp3 file to be antifuzzed
+	    newFile - Antifuzzed mp3 file
+	    args - Contains all arguments passed into antifuzz.py
 
 Return: None
 '''
 
 def mp3(ogFile, newFile, args):
+
 	if args.m is None:
 		cmd(['lame','--quiet', '--scale', '1', ogFile])
 	else:
@@ -87,9 +92,9 @@ Name: cmd
 
 Purpose: Runs a shell command
 
-Parameters: command - String array - each arg = cmd line
+Parameters: command - String array where each argument is a command line argument
 
-Return: out - std out of shell command
+Return: out - Standard ouput of shell command
 '''
 
 def cmd(command):
