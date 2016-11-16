@@ -2,15 +2,26 @@
 File: antifuzz.py
 
 Authors: Kaitlin Keenan and Ryan Frank
-
 '''
 
-import sys
-from shutil import copy2
-import subprocess
-import ssdeep #http://python-ssdeep.readthedocs.io/en/latest/installation.html
-import argparse
 
+# Import needed modules
+import sys
+import argparse
+import subprocess
+from shutil import copy2
+import ssdeep #http://python-ssdeep.readthedocs.io/en/latest/installation.html
+
+
+'''
+Name: main
+
+Purpose: x
+
+Parameters: None
+
+Return: x
+'''
 
 def main():
 
@@ -50,11 +61,32 @@ def main():
 	return 0
 
 
+'''
+Name: mp3
+
+Purpose: changes mp3 file by using lame to change vol by scale of 1
+
+Parameters: ogFile - the original mp3 file to be antifuzzed
+	    newFile - the antifuzzed mp3 file
+
+Return: None
+'''
+
 def mp3(ogFile, newFile):
 	
 	cmd(['lame','--quiet', '--scale', '1', ogFile])
 	cmd(['mv', ogFile + ".mp3", newFile])
 
+
+'''
+Name: cmd
+
+Purpose: Runs a shell command
+
+Parameters: command - String array - each arg = cmd line
+
+Return: out - std out of shell command
+'''
 
 def cmd(command):
 	
@@ -64,5 +96,6 @@ def cmd(command):
 	return out
 
 
+# Run main method
 if __name__ == "__main__":
 	main()
