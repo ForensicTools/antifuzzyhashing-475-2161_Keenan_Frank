@@ -1,8 +1,36 @@
 Purpose:
 
-Fuzzy hashing provides a comparison of two files whose content may only vary slightly.  Tools that provide such a service, like ssdeep or VirusTotal, are very helpful to forensic investigators as they can aid in finding potentially incriminating files.  However, an individual may wish to protect their files from such a technique.
+Fuzzy hashing provides a comparison of two files whose content may only vary slightly.  Tools that provide such a service, like ssdeep or VirusTotal, are helpful to forensic investigators, as they can aid in finding potentially incriminating files.  However, an individual may wish to protect their files from being discovered through such a technique.
+
 
 
 Solution:
 
-Our solution is a Windows command line utility that will serve as an anti-fuzzy hashing tool.  The tool will take a type of file (i.e. mp3) and perform a fuzzy hashing function on it.  Then, the tool will make small changes (In the case of an mp3 file, these changes could include slightly altering the pitch or adding in small pauses.) to the file that will result in the second fuzzy hashes to be completely different.
+Our solution is a Python command line utility that serves as an anti-fuzzy hashing tool.  This tool takes in a given mp3 file and makes small changes to it (See Usage for more information).  These changes ensure that, when the antifuzzed file is compared to the original mp3 file via ssdeep, the files will appear to be completely different.
+
+
+
+Usage:
+
+
+To alter original file by changing file volume by scale of 1:
+
+python antifuzz.py [filename.mp3]
+
+
+
+To keep original file and save volume alterations to new file:
+
+python antifuzz.py [originalFileName.mp3] --newFile [newFileName.mp3]
+
+
+
+To alter original file by changing file metadata (Program automatically and randomly makes these changes):
+
+python antifuzz.py -m [filename.mp3]
+
+
+
+To keep original file and save metadata alterations to new file (Program automatically and randomly makes these changes):
+
+python antifuzz.py -m [originalFileName.mp3] --newFile [newFileName.mp3]
