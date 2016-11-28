@@ -29,19 +29,31 @@ Return: 1 if incorrect arguments are passed
 def main():
 
 	parser = argparse.ArgumentParser()
+	
 	parser.add_argument("originalFile", help="File to antifuzz")
+	
 	parser.add_argument("--newFile", help="Name of the antifuzzed file")
+	
 	parser.add_argument("-m", action='store_true', default=False, help="Change the metadata of the file instead, will still change the ssdeep hash")
+	
 	args = parser.parse_args()
+	
 	pattern = re.compile('mp3$')
 
 	if args.newFile is None:
+		
 		args.newFile = args.originalFile
+	
 	if not args.originalFile.endswith('.mp3'):
+		
 		print "Please use a file with the .mp3 extension for your original file"
+		
 		return 1
+	
 	if not args.newFile.endswith('.mp3'):
+		
 		print "Please use a file with the .mp3 extension for your newfile"
+		
 		return 1
 	
 	# Take in file
@@ -61,6 +73,7 @@ def main():
 
 	# Compare the hashes
 	diff = str(ssdeep.compare(ogHash, newHash))
+	
 	print("The files are " + diff + "% similar")
 
 	return 0
@@ -82,8 +95,10 @@ def mp3(ogFile, newFile, args):
 
 	if args.m is None:
 		cmd(['lame','--quiet', '--scale', '1', ogFile])
+	
 	else:
 		cmd(['lame','--quiet','--tc', str(random.randrange(0, 27)), ogFile])
+	
 	cmd(['mv', ogFile + ".mp3", newFile])
 
 
@@ -100,6 +115,7 @@ Return: out - Standard ouput of shell command
 def cmd(command):
 	
 	p = subprocess.Popen(command, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+	
 	out, err = p.communicate()
 	
 	return out
